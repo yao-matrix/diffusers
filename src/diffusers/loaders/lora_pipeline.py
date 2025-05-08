@@ -2103,7 +2103,7 @@ class FluxLoraLoaderMixin(LoraBaseMixin):
         prefix = prefix or cls.transformer_name
         for key in list(state_dict.keys()):
             if key.split(".")[0] == prefix:
-                state_dict[key[len(f"{prefix}.") :]] = state_dict.pop(key)
+                state_dict[key.removeprefix(f"{prefix}.")] = state_dict.pop(key)
 
         # Find invalid keys
         transformer_state_dict = transformer.state_dict()
@@ -2413,7 +2413,7 @@ class FluxLoraLoaderMixin(LoraBaseMixin):
     ) -> bool:
         """
         Control LoRA expands the shape of the input layer from (3072, 64) to (3072, 128). This method handles that and
-        generalizes things a bit so that any parameter that needs expansion receives appropriate treatement.
+        generalizes things a bit so that any parameter that needs expansion receives appropriate treatment.
         """
         state_dict = {}
         if lora_state_dict is not None:
@@ -2425,7 +2425,7 @@ class FluxLoraLoaderMixin(LoraBaseMixin):
         prefix = prefix or cls.transformer_name
         for key in list(state_dict.keys()):
             if key.split(".")[0] == prefix:
-                state_dict[key[len(f"{prefix}.") :]] = state_dict.pop(key)
+                state_dict[key.removeprefix(f"{prefix}.")] = state_dict.pop(key)
 
         # Expand transformer parameter shapes if they don't match lora
         has_param_with_shape_update = False
